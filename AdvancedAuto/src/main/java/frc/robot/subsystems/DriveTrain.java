@@ -34,7 +34,7 @@ public class DriveTrain extends SubsystemBase {
   private ShuffleboardTab DTLTab = Shuffleboard.getTab("Drive To Line");
   private NetworkTableEntry SwitchDirection = DTLTab.add("Direction", 1).getEntry();
   private NetworkTableEntry DTLDisplacement = DTLTab.add("Displacement", 0.0).getEntry();
-  private NetworkTableEntry DTLOffset = DTLTab.add("Displacement", 0.0).getEntry();
+  private NetworkTableEntry DTLOffset = DTLTab.add("Offset", 0.0).getEntry();
   private NetworkTableEntry LeftVelocity = DTLTab.add("Left Native Velocity", 0.0).getEntry();
   private NetworkTableEntry RightVelocity = DTLTab.add("Right Native Velocity", 0.0).getEntry();
 
