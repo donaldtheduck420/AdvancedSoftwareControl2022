@@ -38,6 +38,13 @@ public class DriveTrain extends SubsystemBase {
   private NetworkTableEntry LeftVelocity = DTLTab.add("Left Native Velocity", 0.0).getEntry();
   private NetworkTableEntry RightVelocity = DTLTab.add("Right Native Velocity", 0.0).getEntry();
 
+
+  private NetworkTableEntry leftTalonkP = DTLTab.add("Left kP", 5.0).getEntry();
+  private NetworkTableEntry rightTalonkP = DTLTab.add("Right kP", 5.0).getEntry();
+  private NetworkTableEntry leftTalonAccel = DTLTab.add("Left MM Accel", 510.0).getEntry();
+  private NetworkTableEntry rightTalonAccel = DTLTab.add("Right MM Accel", 300.0).getEntry();
+
+
   public DriveTrain() {
 
     leftDriveTalon = new WPI_TalonSRX(Constants.DriveTrainPorts.LeftDriveTalonPort);
@@ -55,8 +62,27 @@ public class DriveTrain extends SubsystemBase {
     leftDriveTalon.configFactoryDefault(); leftDriveTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
     rightDriveTalon.configFactoryDefault();    rightDriveTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
+    leftDriveTalon.config_kP(0, 3.0, 10);
+    leftDriveTalon.config_kI(0, 0.0, 10);
+    leftDriveTalon.config_kD(0, 0.0, 10);
+ 
+    leftDriveTalon.configMotionAcceleration(220.0, 10);
+    leftDriveTalon.configMotionCruiseVelocity(400.0, 10);
+ 
+    rightDriveTalon.config_kP(0, 3.0, 10);
+    rightDriveTalon.config_kI(0, 0.0, 10);
+    rightDriveTalon.config_kD(0, 0.0, 10);
+ 
+    rightDriveTalon.configMotionAcceleration(200, 10);
+    rightDriveTalon.configMotionCruiseVelocity(400.0, 10);
 
   }
+
+  public void magicDrive(double displacement) {
+    leftDriveTalon.set(ControlMode.MotionMagic, Constants.DriveToLineConstants.ticksToMeters*displacement);
+    rightDriveTalon.set(ControlMode.MotionMagic, Constants.DriveToLineConstants.ticksToMeters*displacement);
+  }
+ 
 
   public void resetEncoders() {
     leftDriveTalon.setSelectedSensorPosition(0,0,10);
@@ -101,5 +127,11 @@ public class DriveTrain extends SubsystemBase {
     
     tankDrive(RobotContainer.getJoy1().getY()*-0.2, RobotContainer.getJoy2().getY()*-0.2);
 
+
+    leftDriveTalon.config_kP(0, leftTalonkP.getDouble(3.0), 0);
+    rightDriveTalon.config_kP(0, rightTalonkP.getDouble(3.0), 0);
+    leftDriveTalon.configMotionAcceleration(leftTalonAccel.getDouble(220.0), 0);
+    rightDriveTalon.configMotionAcceleration(rightTalonAccel.getDouble(200.0), 0);
+    
   }
 }
